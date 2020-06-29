@@ -1,4 +1,4 @@
-# Testovací nástrooj
+# Testovací nástroj
   Manualní testování: 
     - vytváření testovacích případů (chybí implementace)
     - verzování testovacích případů (Hotovo)
