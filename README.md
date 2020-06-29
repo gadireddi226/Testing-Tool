@@ -1,4 +1,5 @@
 # Testovací nástroj
+```
   Manualní testování: 
     - vytváření testovacích případů (chybí implementace)
     - verzování testovacích případů (Hotovo)
@@ -10,8 +11,9 @@
     Popis:
       - aplikace bude sloužit jen ke spouštení a přehledu výsledků z testů karate testRunner
       - nebude sloužit pro úpravu testů
-
-## Použivání
+```
+# Použivání
+```
   Manualní testování: 
     - vytváření testovacích případů (TODO)
     - verzování testovacích případů (Hotovo)
@@ -21,22 +23,28 @@
    
    Softwarevé testování:
     - Todo
-
-### Spouštení
+```
+# Spouštení
 
 1. Instalace závislostí:
 ```sh
 $ npm install
 ```
 2. Nutnost spustit ve vedlejším terminálu fake REST API pomocí :
+```
 npm run json:server
+```
 
 3. Spustení aplikace :
+```
 npm run start
+```
 
 ## Struktura projektu
+```
 /api databáze fake rest api
 /assets CSS styly 
 /src logika aplikace
 /src/dataControllers komponenty aplikace
+```
 
