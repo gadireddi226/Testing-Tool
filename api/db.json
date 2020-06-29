@@ -1,0 +1,100 @@
+{
+  "testCases": [
+    {
+      "title": "Test1-only one version",
+      "versions": [
+        {
+          "creator": "John Doe",
+          "priority": "1",
+          "type": "3",
+          "status": "1",
+          "version": "0",
+          "steps": [
+            {
+              "description": "open app",
+              "setUp": "ios",
+              "expResult": "app opened"
+            },
+            {
+              "description": "go to settings",
+              "setUp": "wifi connection active",
+              "expResult": "settings loaded"
+            },
+            {
+              "description": "Add third step and save",
+              "setUp": "test1",
+              "expResult": "Visible after refresh"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "DefaultTest",
+      "versions": [
+        {
+          "creator": "Jon Doe",
+          "priority": "2",
+          "type": "3",
+          "status": "4",
+          "version": "1",
+          "steps": [
+            {
+              "description": "open app",
+              "setUp": "android",
+              "expResult": "opened app"
+            },
+            {
+              "description": "go  to settings",
+              "setUp": "no internet connection",
+              "expResult": "setting not loaded, error shown"
+            }
+          ]
+        },
+        {
+          "creator": "Erik G",
+          "priority": "3",
+          "type": "2",
+          "status": "2",
+          "version": "0",
+          "steps": [
+            {
+              "description": "start Windows",
+              "setUp": "not updated",
+              "expResult": "Windows make you wait"
+            },
+            {
+              "description": "Restart windows",
+              "setUp": "",
+              "expResult": "fixs problem"
+            }
+          ]
+        },
+        {
+          "creator": "Bob Johnson",
+          "priority": "2",
+          "type": "2",
+          "status": "3",
+          "version": "5",
+          "steps": [
+            {
+              "description": "open app",
+              "setUp": "ios",
+              "expResult": "app opened"
+            },
+            {
+              "description": "go to settings",
+              "setUp": "wifi connection active",
+              "expResult": "settings loaded"
+            },
+            {
+              "description": "third step",
+              "setUp": "",
+              "expResult": "visible"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
