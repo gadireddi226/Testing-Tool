@@ -34,3 +34,9 @@ npm run json:server
 3. Spustení aplikace :
 npm run start
 
+## Struktura projektu
+/api databáze fake rest api
+/assets CSS styly 
+/src logika aplikace
+/src/dataControllers komponenty aplikace
+
