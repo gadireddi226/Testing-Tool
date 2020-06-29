@@ -1,35 +1,36 @@
-# Testing Tool
-I used webpack, Babel and webpack-dev-server to compile and serve. It is fully compatible with Async/Await as it uses the Babel polyfill.
+# Testovací nástrooj
+  Manualní testování: 
+    - vytváření testovacích případů (chybí implementace)
+    - verzování testovacích případů (Hotovo)
+    - editování testovacích případů (Hotovo)
+    - struktura jak ukládat data (hotova částečně)
+    - přehled testovacích případů ( není dokončeno zcela)
+   
+   Softwarevé testování(TODO):
+    Popis:
+      - aplikace bude sloužit jen ke spouštení a přehledu výsledků z testů karate testRunner
+      - nebude sloužit pro úpravu testů
 
+## Použivání
+  Manualní testování: 
+    - vytváření testovacích případů (TODO)
+    - verzování testovacích případů (Hotovo)
+    - editování testovacích případů (Hotovo)
+    - struktura jak ukládat data (hotova částečně)
+    - přehled testovacích případů ( není dokončeno zcela)
+   
+   Softwarevé testování:
+    - Todo
 
-### Version
-1.1.0
+### Spouštení
 
-## Usage
-
-### Installation
-
-Install the dependencies
-
+1. Instalace závislostí:
 ```sh
 $ npm install
 ```
+2. Nutnost spustit ve vedlejším terminálu fake REST API pomocí :
+npm run json:server
 
-### Serve
-To serve in the browser  - Runs webpack-dev-server
+3. Spustení aplikace :
+npm run start
 
-```sh
-$ npm start
-```
-
-### Build
-Compile and build
-
-```sh
-$ npm run build
-```
-
-
-### License
-
-This project is licensed under the MIT License
