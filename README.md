@@ -1,7 +1,7 @@
 # Testovací nástroj
 ```
   Manualní testování: 
-    - vytváření testovacích případů (chybí implementace)
+    - vytváření testovacích případů (Hotovo)
     - verzování testovacích případů (Hotovo)
     - editování testovacích případů (Hotovo)
     - struktura jak ukládat data (hotova částečně)
