@@ -57,7 +57,17 @@ export const TestCaseCtrl = (function(){
         return data.version;
       },
       getDataHistory: function() {
+        if(dataHistory === undefined) {
+          console.log("no history");
+        }
         return dataHistory;
+      },
+      createZeroVersion: function() {
+        // new TC case
+          // add zero version to history
+          dataHistory.versions.push(data);
+          console.log("afterupdating");
+          console.log(dataHistory);
       },
       isThereChange() {
         console.log("is there change?");

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TestCase</title>
+    <title>Create new TestCase</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -11,12 +11,12 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
 </head>
-<body id="testCase">
+<body id="newTestCase">
     <nav>
         <div class="nav-wrapper">
-          <a href="index.html" class="brand-logo"><i class="material-icons">arrow_back</i>TestCase</a>
+          <a href="index.html" class="brand-logo"><i class="material-icons">arrow_back</i>Create new TestCase</a>
           <ul id="nav-mobile" class="right">
-            <li><a href="#" id="edit-testCase" class="edit-btn btn">Edit TestCase</a></li>
+            <li><a href="#" id="edit-testCase" class="edit-btn btn" style="display: none;">Edit TestCase</a></li>
             <li><a href="#" id="delete-testCase" class="delete-btn btn">Delete TestCase</a></li>
             <li><a href="#" id="save-testCase" class="save-btn btn">Save TestCase</a></li>
           </ul>
@@ -32,18 +32,10 @@
             </div>
             <div class="input-field col s2">
               <select id="version">
-                <option value="" disabled selected>Choose version</option>
-                <!-- <option value="1">Heigh</option>
-                <option value="2">Medium</option>
-                <option value="3">Low</option> -->
+                <option value="0" disabled selected>0</option>
               </select>
               <label>Version</label>
             </div>
-            <!-- <div class="input-field col s2">
-              <input disabled value="0" id="version" type="text">
-              <label for="version">Version</label>
-            </div> -->
-
             <div class="input-field col s6" id="version_edit">
               <select multiple>
                 <option value="" disabled selected>Choose versions to be deleted</option>

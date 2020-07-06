@@ -69,8 +69,38 @@ export const UITestCaseCtrl = (function(){
       
     }
 
+    function changeOtherCheckBoxes(bool,form,id){
+      let none = form.querySelector("#none");
+      let passed = form.querySelector("#passed");
+      let failed = form.querySelector("#failed");
+      let blocked = form.querySelector("#blocked");
+     
+      switch(id) {
+        case "none":
+          passed.disabled = bool;
+          failed.disabled = bool;
+          blocked.disabled = bool;
+          break;
+        case "passed":
+          none.disabled = bool;
+          failed.disabled = bool;
+          blocked.disabled = bool;
+          break;
+        case "failed":
+          none.disabled = bool;
+          passed.disabled = bool;
+          blocked.disabled = bool;
+          break;
+        case "blocked":
+          none.disabled = bool;
+          passed.disabled = bool;
+          failed.disabled = bool;
+          break;
+        default:
+          console.log("unrecognized");
+      }
+    }
 
-    
     // Public methods
     return {
       populateStepsTable: function(steps){
@@ -91,6 +121,32 @@ export const UITestCaseCtrl = (function(){
                     <input type="button" id="edit_button" value="Edit" class="edit"> 
                     <input type="button" id="save_button" value="Save" class="save" style="display: none;"> 
                     <input type="button" value="Delete" class="delete">
+                    <form action="#" style="display: none;">
+                      <p class="state_">
+                        <label>
+                          <input id="none" type="checkbox" class="filled-in"   />
+                          <span>None</span>
+                        </label>
+                      </p>
+                      <p class="state_">
+                        <label>
+                          <input id="passed" type="checkbox" class="filled-in"  />
+                          <span>Passed</span>
+                        </label>
+                      </p>
+                      <p class="state_">
+                        <label>
+                          <input id="failed" type="checkbox" class="filled-in"  />
+                          <span> Failed</span>
+                        </label>
+                      </p>
+                      <p class="state_">
+                        <label>
+                          <input id="blocked" type="checkbox" class="filled-in" />
+                          <span>Blocked</span>
+                        </label>
+                      </p>
+                    </form>
                 </td></tr>`
         });  
         // Insert steps 
@@ -146,6 +202,32 @@ export const UITestCaseCtrl = (function(){
                       <input type="button" id="edit_button" value="Edit" class="edit" > 
                       <input type="button" id="save_button" value="Save" class="save" style="display: none;"> 
                       <input type="button" value="Delete" class="delete" >
+                      <form action="#" style="display: none;" >
+                      <p class="state_">
+                        <label>
+                          <input id="none" type="checkbox" class="filled-in"   />
+                          <span>None</span>
+                        </label>
+                      </p>
+                      <p class="state_">
+                        <label>
+                          <input id="passed" type="checkbox" class="filled-in"  />
+                          <span>Passed</span>
+                        </label>
+                      </p>
+                      <p class="state_">
+                        <label>
+                          <input id="failed" type="checkbox" class="filled-in"  />
+                          <span> Failed</span>
+                        </label>
+                      </p>
+                      <p class="state_">
+                        <label>
+                          <input id="blocked" type="checkbox" class="filled-in" />
+                          <span>Blocked</span>
+                        </label>
+                      </p>
+                    </form>
                   </td></tr>`
           // Insert step to storage
           TestCaseCtrl.isThereChange();
@@ -173,8 +255,8 @@ export const UITestCaseCtrl = (function(){
           row.outerHTML="";
           //update numbers
           updateNumbersOfrows();
+          e.preventDefault();
         }
-        e.preventDefault();
       },
       editStep: function(e) {
         if(e.target.className === "edit") {
@@ -202,8 +284,8 @@ export const UITestCaseCtrl = (function(){
             inputDescription.setAttribute("type","text");
             field.appendChild(inputDescription)
           })
+          e.preventDefault();
        }
-       e.preventDefault();
       },
       saveStep: function(e) {
         if(e.target.className === "save") {
@@ -231,8 +313,35 @@ export const UITestCaseCtrl = (function(){
           // show proper buttons
           editBtn.style.display="table-cell";
           saveBtn.style.display="none";
+          e.preventDefault();
         }
-        e.preventDefault();
+      },
+      statusOfStepUpdated: function(e) {
+        const checkbox = e.target;
+        if(checkbox.type == "checkbox") {
+          let checkBoxesParent = checkbox.parentElement.parentElement.parentElement;
+          switch(checkbox.id) {
+            case "none":
+              console.log(checkbox.checked);
+              changeOtherCheckBoxes(checkbox.checked,checkBoxesParent,"none");
+              break;
+            case "passed":
+              console.log(checkbox.checked);
+              changeOtherCheckBoxes(checkbox.checked,checkBoxesParent,"passed");
+              break;
+            case "failed":
+              console.log(checkbox.checked);
+              changeOtherCheckBoxes(checkbox.checked,checkBoxesParent,"failed");
+              break;
+            case "blocked":
+              console.log(checkbox.checked);
+              changeOtherCheckBoxes(checkbox.checked,checkBoxesParent,"blocked");
+              break;
+            default:
+              console.log("unrecognize");
+              // code block
+          }
+        }
       },
       changeTestCaseVersion:function(e) {
         console.log("changed version");
@@ -243,7 +352,7 @@ export const UITestCaseCtrl = (function(){
         var elems = document.querySelectorAll('select');
         var options = document.querySelectorAll('option');
         var instances = M.FormSelect.init(elems, options); 
-        e.preventDefault();
+        //e.preventDefault();
       },
       hideFirstRow: function() {
         document.querySelector(UISelectors.tableOfSteps).children[0].style.display = "none";
@@ -266,16 +375,32 @@ export const UITestCaseCtrl = (function(){
           let data = TestCaseCtrl.getDataHistory();
           // Update versions
           http.put(`http://localhost:3000/testCases/${data.title}`, data)
-            .then(data => {
-              uiAlert.showAlert('Post updated', 'alert alert-success');
-            })
-            .catch(err => console.log(err));
+          .then(data => {
+            uiAlert.showAlert('TestCase updated', 'alert alert-success');
+          })
+          .catch(err => console.log(err));
+          e.preventDefault();
         }
         else {
           uiAlert.showAlert("Nothing to be saved.","alert alert-info");  
           console.log("AlertFired") 
         }
-        e.preventDefault();
+      },
+      saveNewTC:function(e) {
+        let info = UITestCaseCtrl.getTestCaseInfo();
+        TestCaseCtrl.setTestcaseInfo(info.title,info.status, info.creator, info.priority, info.type, info.version );
+        TestCaseCtrl.createZeroVersion();
+        let data = TestCaseCtrl.getDataHistory();
+        console.log("save new tc");
+        // add testcase to database
+        http.post(`http://localhost:3000/testCases`, data)
+        .then(data => {
+          uiAlert.showAlert('NewTestCase Saved', 'alert alert-success');
+        })
+        .catch(err => console.log(err));
+        // go to test suite page
+        window.location.href = "index.html"
+        e.preventDefault();      
       }
     }
   })();
