@@ -27,6 +27,9 @@
   background-color: greenyellow;
   /* visibility: hidden; */
 }
+.state_{
+  display: inline-block;
+}
 .save-btn:hover,.edit-btn:hover,.delete-btn:hover {
   background-color:white
 }

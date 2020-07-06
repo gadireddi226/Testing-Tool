@@ -36,10 +36,14 @@ export const UISummaryCtrl = (function() {
           //
           localStorage.setItem("TestCaseRequest",rowLink);
           window.location.href = "testCase.html"
-
         }
         else{
           console.log(e.target);
+        }
+      },
+      addNewTestCase: function(e) {
+        if(e.target.parentElement.id === "addNewTestCase") {
+          window.location.href = "new_testcase.html";
         }
       }
     }

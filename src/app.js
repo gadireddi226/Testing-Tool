@@ -17,10 +17,16 @@ const app = {
       var elems = document.querySelectorAll('select');
       var options = document.querySelectorAll('option');
       var instances = M.FormSelect.init(elems, options); 
+      var elems = document.querySelectorAll('.fixed-action-btn');
+      var instances = M.FloatingActionButton.init(elems, options);
      //
       console.log("load method triggerd");
       app.showLoading();
       app.getData();
+  },
+  removeLoading:() => {
+      let ul = document.querySelector('.loading-table');
+      ul.outerHTML = '';
   },
   showLoading: () => {
       let ul = document.querySelector('#data_table');
@@ -33,6 +39,17 @@ const app = {
       //based on the current page...
       let page = document.body.id;
       switch (page) {
+          case 'newTestCase':
+            app.removeLoading();
+            //add custom event listeners for posts page
+            document.querySelector('.add').addEventListener('click',UITestCaseCtrl.addStep);
+            document.querySelector('#wrapper').addEventListener('click',UITestCaseCtrl.deleteStep);
+            document.querySelector('#wrapper').addEventListener('click',UITestCaseCtrl.editStep);
+            document.querySelector('#wrapper').addEventListener('click',UITestCaseCtrl.saveStep);
+            document.querySelector('#wrapper').addEventListener('click',UITestCaseCtrl.statusOfStepUpdated);
+            document.querySelector('#version').addEventListener('change',UITestCaseCtrl.changeTestCaseVersion);
+            document.querySelector('#save-testCase').addEventListener('click',UITestCaseCtrl.saveNewTC);
+            break;
           case 'testCase':
               app.getTestCase();
               //add custom event listeners for posts page
@@ -40,6 +57,7 @@ const app = {
               document.querySelector('#wrapper').addEventListener('click',UITestCaseCtrl.deleteStep);
               document.querySelector('#wrapper').addEventListener('click',UITestCaseCtrl.editStep);
               document.querySelector('#wrapper').addEventListener('click',UITestCaseCtrl.saveStep);
+              document.querySelector('#wrapper').addEventListener('click',UITestCaseCtrl.statusOfStepUpdated);
               document.querySelector('#version').addEventListener('change',UITestCaseCtrl.changeTestCaseVersion);
               document.querySelector('#save-testCase').addEventListener('click',UITestCaseCtrl.saveTC);
               break;
@@ -47,6 +65,7 @@ const app = {
               console.log("testcases summary")
               app.getTestCasesSummary();
               document.querySelector('#wrapper').addEventListener('click',UISummaryCtrl.openTestCase);
+              document.querySelector('#addNewTestCase').addEventListener('click',UISummaryCtrl.addNewTestCase);
               //add custom event listeners for users page
               break;
         //   case 'photos':
