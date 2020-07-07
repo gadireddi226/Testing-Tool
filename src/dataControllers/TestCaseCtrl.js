@@ -66,8 +66,6 @@ export const TestCaseCtrl = (function(){
         // new TC case
           // add zero version to history
           dataHistory.versions.push(data);
-          console.log("afterupdating");
-          console.log(dataHistory);
       },
       isThereChange() {
         console.log("is there change?");
@@ -87,8 +85,10 @@ export const TestCaseCtrl = (function(){
       applyChanges() {
         //apply changes to storage
         let curTestCase = data;
-        let indexOfOldVersion = dataHistory.versions.findIndex(element=>element.version === curTestCase.version);
-        dataHistory.versions[indexOfOldVersion] = curTestCase;
+        // let indexOfOldVersion = dataHistory.versions.findIndex(element=>element.version === curTestCase.version);
+        // dataHistory.versions[indexOfOldVersion] = curTestCase;
+        curTestCase.version = String(Number(TestCaseCtrl.getLatestVersion().version)+1);
+        dataHistory.versions.push(curTestCase);
       },
       getCurTestCase: function() {
         return data;
