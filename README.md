@@ -15,7 +15,7 @@
 # Použivání
 ```
   Manualní testování: 
-    - vytváření testovacích případů (TODO)
+    - vytváření testovacích případů (Hotovo)
     - verzování testovacích případů (Hotovo)
     - editování testovacích případů (Hotovo)
     - struktura jak ukládat data (hotova částečně)
