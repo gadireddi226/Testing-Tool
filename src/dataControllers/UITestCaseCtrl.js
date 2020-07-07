@@ -348,11 +348,10 @@ export const UITestCaseCtrl = (function(){
         let version = e.target.value;
         TestCaseCtrl.setTestCaseVersionBaseOnSelect(version);
         UITestCaseCtrl.createUIelements();
-        e.target.value = version; //set selector to users latest state
+        e.target.value = version; // set selector to users latest state
         var elems = document.querySelectorAll('select');
         var options = document.querySelectorAll('option');
         var instances = M.FormSelect.init(elems, options); 
-        //e.preventDefault();
       },
       hideFirstRow: function() {
         document.querySelector(UISelectors.tableOfSteps).children[0].style.display = "none";
