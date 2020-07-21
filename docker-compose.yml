@@ -1,0 +1,13 @@
+version: '3'
+services:
+  web_app:
+    image: "gadireddi226/testing_tool_app"
+    ports:
+      - "8080:8080"
+  db:
+    image: "clue/json-server"
+    ports:
+      - "3000:80"
+    volumes:
+      - ./api/db.json:/data/db.json
+

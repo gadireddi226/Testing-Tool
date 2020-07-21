@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "start": "webpack-dev-server --output-public-path=/build/",
+    "start": "webpack-dev-server --output-public-path=/build/ --host 0.0.0.0",
     "json:server": "json-server --watch --id title api/db.json"
   },
   "author": "Erik Gadireddi",
