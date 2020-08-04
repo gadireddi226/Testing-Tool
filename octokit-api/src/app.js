@@ -34,7 +34,7 @@ function evalText() {
 }
 //// initialize
 const octokit = new MyOctokit({
-  auth: "91530905c8a942915ce978ad766c8947e3dcc9f8",
+  auth: "c7a9a870bf8f3a5bd5489f8e879c56baee14f498",
    log: {
     debug: () => {},
     info: () => {},
@@ -46,7 +46,6 @@ const octokit = new MyOctokit({
 const owner = "gadireddi226"
 const repo = "Testing-Tool"
 var ref;
-var tree_sha;
 
 //get all branches
 function getBranches() {
@@ -56,7 +55,6 @@ function getBranches() {
     )
     .then((data) => {
       console.log(data);
-
     });
 }
 
@@ -89,21 +87,22 @@ function getMasterBranch() {
     })
 }
 
-function getMasterCommits() {
+function getMasterCommits(sha_master_ref) {
   return octokit
-        .paginate(`GET /repos/${owner}/${repo}/git/commits/217433e5e496149ba3ea0a97ec377bb072339a3f`, {
+        .paginate(`GET /repos/${owner}/${repo}/git/commits/${sha_master_ref}`, {
         }
         )
         .then((arrayCommits) => {
           if (arrayCommits[0]){
-          const shaOfLatestCommit = arrayCommits[0].sha;
-          //console.log(shaOfLatestCommit);
-          const shaOfLatestCommitTree = arrayCommits[0].tree.sha;
-          //commits.map((com) => com.tree.sha);
-          //console.log(commits.map((com) => com.tree.sha));
-          //console.log(`tre ${shaOfLatestCommitTree}`);
+            const commitSha = arrayCommits[0].sha;
+            //console.log(shaOfLatestCommit);
+            const treeSha = arrayCommits[0].tree.sha;
+            //commits.map((com) => com.tree.sha);
+            //console.log(commits.map((com) => com.tree.sha));
+            //console.log(`tre ${shaOfLatestCommitTree}`);
+            console.log(arrayCommits);
 
-          return { shaOfLatestCommit, treeSha: shaOfLatestCommitTree};
+            return { commitSha, treeSha};
           }
           else{
             return null;
@@ -162,22 +161,22 @@ function getReleases() {
 
 // get file_tree
 // testing sha-tree 88aff31d37aaa221b809167a93cc9a4891cf491c
-function getRootTree() {
+function getRootTree(treeSha) {
   var tree = octokit.git.getTree({
     owner: owner,
     repo: repo,
-    tree_sha: "5cad5e5130fddd678491691a287cf1e1c6b637e9",
+    tree_sha: treeSha,
     recursive: true
   }).then((response) => {
     console.log(response);
   })
 }
 
-function getBlob() {
+function getBlob(fileSha) {
   octokit.git.getBlob({
     owner: owner,
     repo: repo,
-    file_sha: "fda67d724654d41ceb8996065fc0705a9ac58224",
+    file_sha: fileSha,
   }).then((data) => {
     console.log(data.data.content);
   })
@@ -186,31 +185,35 @@ function getBlob() {
 // -----------------------------------------------------
 
 // Create ----------------------------------------------
-function createBlob() {
-  var resp = octokit.git.createBlob({
+function createBlob(input) {
+  return octokit.git.createBlob({
     owner: owner,
     repo: repo,
-    content: "Content of the blob",
-    encoding: "base64",
-  }).then((data) => {
-    console.log(data);
+    content: input,
+    encoding: "utf-8|base64",
+  }).then((blobResponse) => {
+    if(blobResponse.status === 201){
+      console.log(blobResponse);
+      const shaOfBlob = blobResponse.data.sha;
+      const urlOfBlob = blobResponse.data.url;
+      return {shaOfBlob,urlOfBlob}
+    }
   })
-  console.log(resp);
 }
 
-function removeAndUpdate() {
+function removeFile(path, base_tree) {
   octokit.git.createTree({
     owner: owner,
     repo: repo,
     tree: [
       {
-        "path": "testFile.txt",
+        "path": path,
         "mode": "100644",
         "type": "blob",
         "sha": null,
       }
     ],
-    base_tree: "5cad5e5130fddd678491691a287cf1e1c6b637e9"
+    base_tree: base_tree
   }).then((response) => {
     console.log(response);
     // octokit.git.createCommit({
@@ -224,6 +227,62 @@ function removeAndUpdate() {
     // })
   })
 }
+// TODO
+function updateFile(base_tree) {
+  octokit.git.createTree({
+    owner: owner,
+    repo: repo,
+    tree: [
+      {
+        "path": "testFile.txt",
+        "mode": "100644",
+        "type": "blob",
+        "sha": null,
+      }
+    ],
+    base_tree: base_tree
+  }).then((response) => {
+    console.log(response);
+    // octokit.git.createCommit({
+    //   owner:owner,
+    //   repo:repo,
+    //   message:"New commit",
+    //   tree:"5cad5e5130fddd678491691a287cf1e1c6b637e9",
+    //   parents:["f221bd506e9b772bd149ed912693da6eb8f17628"],
+    // }).then((data)=>{
+    //   console.log(data);
+    // })
+  })
+}
+
+function createTree(path,mode,type,shaOfNode,base_tree) {
+  return octokit.git.createTree({
+    owner: owner,
+    repo: repo,
+    tree: [
+      {
+        "path": path,
+        "mode": mode,
+        "type": type,
+        "sha": shaOfNode,
+      }
+    ],
+    base_tree: base_tree
+  }).then((response) => {
+    console.log(response);
+    if(response.status === 201){
+      const newTreeSha = response.data.sha
+      return newTreeSha;
+    }
+    else {
+      return null;
+    }
+  })
+
+}
+
+
+
 
 function getMasterRef() {
   octokit
@@ -239,44 +298,60 @@ function getMasterRef() {
     });
 }
 
-function createCommit() {
-  octokit.git.createCommit({
+function createCommit(message = "Default empty message", new_tree, parent) {
+  return octokit.git.createCommit({
     owner: owner,
     repo: repo,
-    message: "New commit3",
-    tree: "f3c8aa091d6d536fc15b5bd8b75bdbdea5c98d1f",
-    parents: ["465f7da6995f565a3548175d05fae214a48a6eaf"],
-  }).then((data) => {
-    console.log(data.sha);
-    console.log(data);
+    message: message,
+    tree: new_tree,
+    parents: [parent],
+  }).then((response) => {
+    console.log(response);
+    if(response.status === 201){
+      const commitSha = response.data.sha;
+      return commitSha
+    }
+    else {
+      return null;
+    }
   })
 }
 
-function updateRef() {
-  octokit.git.updateRef({
+function updateRef(newCommitSha) {
+  console.log(`sha of new commit ${newCommitSha}`)
+  return octokit.git.updateRef({
     owner: owner,
     repo: repo,
     ref: "heads/master",
-    sha: "217433e5e496149ba3ea0a97ec377bb072339a3f",
+    sha: newCommitSha,
   }).then((data) => {
-    console.log(data);
+    if(data.status === 200){
+      alert("Success new file commited to repository");
+      return data;
+    }
+    else {
+      alert(`Error ${data.status}`);
+    }
   })
 }
 
-async function createFile() {
+async function createFile(input = "empty file",path = "testfile.txt") {
   const sha_master_ref = await getMasterBranch();
-  const latestCommitIds = await getMasterCommits();
-  console.log(sha_master_ref);
-  console.log(latestCommitIds);
-  //to be continued
+  const latestCommitIds = await getMasterCommits(sha_master_ref);
+  //const blobIds = await createBlob(input);
+  //const newTreeSha = await createTree(`${path}`,"100644","blob",blobIds["shaOfBlob"],latestCommitIds["treeSha"]);
+  //const newCommitSha = await createCommit(`createFile ${path}`,newTreeSha,latestCommitIds["commitSha"]);
+  //const updateRefShaResponse = await updateRef(newCommitSha);
 }
+
+createFile();
 //removeAndUpdate();
 //createCommit();
 //updateRef();
 //tryCommits();
 // getMasterBranch();
 // getMasterRef();
-tryCommits();
+//createBlob();
 //getRootTree();
 //getMasterBranch();
 //removeAndUpdate();
