@@ -17,6 +17,23 @@ module.exports = {
         query: {
           presets: ['@babel/preset-env']
         }
+      },
+      {
+        test:/\.css$/,
+        use:['style-loader','css-loader']
+      },
+      {
+        test: /\.(png|jpg)$/,
+        loader: 'url-loader'
+      },
+      {
+        test: /\.svg$/,
+        use: [{
+          loader: 'html-loader',
+          options: {
+            minimize: true
+          }
+        }]
       }
     ]
   }

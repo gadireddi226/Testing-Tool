@@ -7,11 +7,47 @@
   <title>My JavaScript App</title>
 </head>
 <body>
-  <h1>My JavaScript App</h1>
-  <p>This app was compiled using the Babel Webpack Starter Pack which can compile ES2015, ES2016 and ES2017 code including Async/Await</p>
-  <input id="textField" placeholder="enter what you want to show">
-  <button id="show">Show</button>
-  
+  <!-- <h1>My JavaScript App</h1> -->
+  <div id="infoTable">
+    <input id="textField" placeholder="enter what you want to show">
+    <button id="show">Show</button>
+      <div style='height: 100%; width: 30%; float: left; overflow-y: scroll;resize: both;'>
+      <div style='font-size: 1.4rem; font-weight:700;'>Info:</div>
+      <div id='info' >
+					<!-- <li>Formula One Teams (2018)
+						<ul>
+							<li>&#9675; Scuderia Ferrari</li>
+							<li>&#9675; Sahara Force India F1 Team</li>
+							<li>&#9675; Haas F1 Team</li>
+							<li>&#9675; McLaren F1 Team</li>
+							<li>&#9675; Mercedes AMG Petronas Motorsport</li>
+							<li>&#9675; Aston Martin Red Bull Racing</li>
+							<li>&#9675; Renault Sport Formula One Team</li>
+							<li>&#9675; Alfa Romeo Sauber F1 Team</li>
+							<li>&#9675; Red Bull Toro Rosso Honda</li>
+							<li>&#9675; Williams Martini Racing</li>
+						</ul>
+					</li> -->
+				</div>
+    </div>
+  </div>
+   <!-- Create the editor container -->
+  <div style='height: 100%; width: 70%; float: left; overflow-y: scroll; font-size: 1.15rem;resize: both;'>
+    <div id="form-container" class="container">
+      <form>
+        <div class="row form-group">
+          <label id="nameOfFile" for="rawFile">RawFile</label>
+          <input name="rawFile" type="hidden">
+          <div id="editor">
+          </div>
+        </div>
+        <div class="row">
+          <button id="submit" class="btn btn-primary" type="submit">Save File</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  </body>
   <script src="build/app.bundle.js"></script>
 </body>
 </html>

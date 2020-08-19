@@ -1,13 +1,60 @@
-version: '3'
+version: "3.2"
 services:
   web_app:
+    container_name: web_app
     image: "gadireddi226/testing_tool_app"
     ports:
       - "8080:8080"
+    networks:
+      container_net:
+        ipv4_address: "172.16.238.10"
+    volumes:
+      - type: volume
+        source: datareports
+        target: /Testing-Tool/sharedData
+        read_only: true
+    depends_on:
+      - db
+    links:
+      - db
+
   db:
+    container_name: db
     image: "clue/json-server"
     ports:
       - "3000:80"
+    networks:
+      container_net:
+        ipv4_address: "172.16.238.11"
     volumes:
       - ./api/db.json:/data/db.json
+  test_runner:
+    container_name: test_runner
+    image: "gadireddi226/testrunner:latest"
+    ports:
+      - "5900:5900"
+    security_opt:
+      - seccomp:./chrome.json
+    volumes:
+      - type: volume
+        source: datareports
+        target: /src/target
+        read_only: false
+  watchtower:
+    container_name: watchtower
+    restart: always
+    image: containrrr/watchtower
+    volumes: 
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --debug true --cleanup true web_app db test_runner
 
+volumes:
+  datareports:
+
+networks:
+  container_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24

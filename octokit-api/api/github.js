@@ -18,13 +18,10 @@ export class Github {
     }
     // Get Methods -----------------------------------------------------
     async getBranches() {
-        await this.octokit
+        return await this.octokit
             .paginate(`GET /repos/${this.owner}/${this.repo}/branches`, {
             },
             )
-            .then((data) => {
-                console.log(data);
-            });
     }
 
     async getMasterBranch() {
@@ -69,10 +66,12 @@ export class Github {
             .paginate(this.octokit.pulls.list, {
                 owner: this.owner,
                 repo: this.repo,
-            }, (response) => response.data.map((pull) => pull.title)
+                state: "all",
+            },// (response) => response.data.map((pull) => pull.title)
             )
             .then((pulls) => {
-                console.log(pulls)
+                console.log(pulls);
+                return pulls;
                 // pull requests title
             });
     }
@@ -81,12 +80,11 @@ export class Github {
         return await this.octokit
             .paginate(
                 `GET /repos/${this.owner}/${this.repo}/issues`,
-                {},
-                (response) => response.data.map((issue) => [issue.title, issue.state])
+                {}
             )
-            .then((issueTitlesAndStates) => {
-                console.log(issueTitlesAndStates);
-
+            .then((data) => {
+                console.log(data);
+                return data;
             });
     }
 
@@ -98,6 +96,7 @@ export class Github {
             )
             .then((data) => {
                 console.log(data);
+                return data;
             });
     }
 
@@ -109,6 +108,7 @@ export class Github {
             )
             .then((data) => {
                 console.log(data);
+                return data;
             });
     }
 
@@ -120,6 +120,7 @@ export class Github {
             recursive: true
         }).then((response) => {
             console.log(response);
+            return response;
         })
     }
 
@@ -128,8 +129,6 @@ export class Github {
             owner: this.owner,
             repo: this.repo,
             file_sha: fileSha,
-        }).then((data) => {
-            console.log(data.data.content);
         })
     }
 
@@ -142,7 +141,7 @@ export class Github {
             .then((data) => {
                 console.log(`getmaster ref ${data}`);
                 if (data[0]) {
-                    ref = data[0];
+                    return data;
                 }
             });
     }
@@ -247,12 +246,17 @@ export class Github {
             alert(`Error ${err} \n Try again later and check if object is not already deleted`);
         }
     }
-    async editFile(originPath, newName, input) {
+    async editFile(originPath, input) {
         try {
             const sha_master_ref = await this.getMasterBranch();
+            console.log("sha obtained");
             const latestCommitIds = await this.getMasterCommits(sha_master_ref);
-            const newTreeSha = await this.createTree(`${path}`, "100644", "blob", null, latestCommitIds["treeSha"]);
-            const newCommitSha = await this.createCommit(`editFile ${path}`, newTreeSha, latestCommitIds["commitSha"]);
+            console.log("commit obtained");
+            const blobIds = await this.createBlob(input);
+            console.log("blob created");
+            const newTreeSha = await this.createTree(`${originPath}`, "100644", "blob", blobIds["shaOfBlob"], latestCommitIds["treeSha"]);
+            console.log("new tree created");
+            const newCommitSha = await this.createCommit(`editFile ${originPath}`, newTreeSha, latestCommitIds["commitSha"]);
             this.updateRef(newCommitSha);
         }
         catch (err) {
